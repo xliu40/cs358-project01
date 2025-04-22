@@ -69,12 +69,11 @@ int main(int argc, char *argv[])
 	//
   auto start = chrono::high_resolution_clock::now();
 
-
-	// Parallellize the outer loop (each thread gets one or more rows)
-	// schedule(static) is used to assign rows to threads in a round-robin fashion
-	// reduction(+:cells) handles the counter across the threads
-	// pragma omp critical makes sure progress output isn't garbled
-	#pragma omp parallel for reduction(+:cells) schedule(static)
+	// Pararellelize the work matrix using OpenMP:
+	//   - collapse(2) flattens two outer loops into one flat loop
+	//   - num_threads(_numThreads) sets the number of threads to use to help control scaling
+	//   - schedule(static, 1) assigns iterations to threads one at a time so that work is distributed evenly across all cells
+	#pragma omp parallel for collapse(2) num_threads(_numThreads) schedule(static, 1)
 	for (int r = 0; r < wm.num_rows(); r++) {
 		for (int c = 0; c < wm.num_cols(); c++) {
 
