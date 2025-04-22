@@ -69,6 +69,7 @@ int main(int argc, char *argv[])
 	//
   auto start = chrono::high_resolution_clock::now();
 
+	#pragma omp parallel for reduction(+:cells) schedule(static)
 	for (int r = 0; r < wm.num_rows(); r++) {
 		for (int c = 0; c < wm.num_cols(); c++) {
 
@@ -83,8 +84,11 @@ int main(int argc, char *argv[])
 			cells++;
 
 			if (cells % 100 == 0) {
-				cout << ".";
-				cout.flush();
+				#pragma omp critical
+				{
+					cout << ".";
+					cout.flush();
+				}
 			}
 		}
 	}
