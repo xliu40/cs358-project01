@@ -9,7 +9,7 @@
 //   work [-?] [-t NumThreads]
 //
 // Author:
-//   << YOUR NAME >>
+//   << Xiaolin Liu >>
 //   Northwestern University
 // 
 // Initial template:
